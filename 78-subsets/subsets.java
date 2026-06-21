@@ -7,6 +7,8 @@ class Solution {
     }
 
     public void solve(int[] nums,List<List<Integer>> res,List<Integer> curr,int start){
+
+        if(res.contains(curr)) return;
         res.add(new ArrayList<>(curr));
         for(int i=start;i<nums.length;i++){
             curr.add(nums[i]);
