@@ -11,10 +11,10 @@ class Solution {
 
     public void solve(int[] nums,List<List<Integer>> res,List<Integer> curr,int start){
 
-        if(res.contains(curr)) return;
+        // if(res.contains(curr)) return;
         res.add(new ArrayList<>(curr));
         for(int i=start;i<nums.length;i++){
-            // if(i>start && nums[i]==nums[i-1]) continue;
+            if(i>start && nums[i]==nums[i-1]) continue;
             curr.add(nums[i]);
             solve(nums,res,curr,i+1);
             curr.remove(curr.size()-1);
