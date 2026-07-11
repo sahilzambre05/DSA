@@ -13,15 +13,15 @@ class Solution {
         return dfs(0,-1,adjList,hasApple);
     }
 
-    public int dfs(int src,int parent,List<List<Integer>> adjList,List<Boolean> hasApple){
-        int totalTime=0;
+    public int dfs(int src,int parent, List<List<Integer>> adjList,List<Boolean> hasApple){
+        int time=0;
         for(int neighbour : adjList.get(src)){
             if(neighbour==parent) continue;
-            int timeTakenByChild = dfs(neighbour,src,adjList,hasApple);
-            if(timeTakenByChild>0 || hasApple.get(neighbour)){
-                totalTime+= timeTakenByChild+2;
+            int timetaken = dfs(neighbour,src,adjList,hasApple);
+            if(timetaken>0 || hasApple.get(neighbour)){
+                time += timetaken+2;
             }
         }
-        return totalTime;
+        return time;
     }
 }
