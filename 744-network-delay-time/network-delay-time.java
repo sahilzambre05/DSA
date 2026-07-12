@@ -14,15 +14,15 @@ class Solution {
             }
         }
 
-        for(int time[] : times){
-            int u = time[0];
-            int v = time[1];
-            int w = time[2];
-            if(dist[u]!=(int)1e8 && dist[u] + w < dist[v]){
-                // dist[v] = dist[u] + w;
-                return -1;
-            }
-        }
+        // for(int time[] : times){
+        //     int u = time[0];
+        //     int v = time[1];
+        //     int w = time[2];
+        //     if(dist[u]!=(int)1e8 && dist[u] + w < dist[v]){
+        //         // dist[v] = dist[u] + w;
+        //         return -1;
+        //     }
+        // }
 
         int result = 0;
         for(int i=1;i<=n;i++){
