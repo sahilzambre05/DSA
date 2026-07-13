@@ -3,63 +3,53 @@ class Solution {
         DisjointSet dsu = new DisjointSet(26);
         ArrayList<int[]> notEqual = new ArrayList<>();
         for(String equation : equations){
-            int u = equation.charAt(0)-'a';
-            int v = equation.charAt(3)-'a';
+            int n1 = equation.charAt(0) - 'a';
+            int n2 = equation.charAt(3) - 'a';
             if(equation.charAt(1)=='='){
-                dsu.unionBySize(u,v);
+                dsu.unionBySize(n1,n2);
             }else{
-                notEqual.add(new int[]{u,v});
+                notEqual.add(new int[]{n1,n2});
             }
         }
-        for(int edge[] : notEqual){
-            if(dsu.findRootParent(edge[0])==dsu.findRootParent(edge[1])){
-                return false;
-            }
+        for(int arr[] : notEqual){
+            if(dsu.findParent(arr[0])==dsu.findParent(arr[1])) return false;
         }
         return true;
-        
     }
 }
 
-
-class DisjointSet{
-    int[] parent;
-    int[] size;
-
+public class DisjointSet{
+    int parent[];
+    int size[];
     DisjointSet(int node){
         this.parent = new int[node];
         this.size = new int[node];
         for(int i=0;i<node;i++){
-            parent[i]=i;
-            size[i]=1;
+            this.parent[i] = i;
+            this.size[i] = 1;
         }
     }
 
-
-    public int findRootParent(int node){
+    public int findParent(int node){
         if(node==parent[node]){
             return node;
         }
-        parent[node] = findRootParent(parent[node]);
+        parent[node] = findParent(parent[node]);
         return parent[node];
     }
 
     public boolean unionBySize(int node1,int node2){
-        int rootParent1 = findRootParent(node1);
-        int rootParent2 = findRootParent(node2);
-
-        if(rootParent1==rootParent2){
-            return false;
-        }
-
-        if(size[rootParent1]<size[rootParent2]){
-            parent[rootParent1]=rootParent2;
-            size[rootParent2]+=size[rootParent1];
+        int nodeParent1 = findParent(node1);
+        int nodeParent2 = findParent(node2);
+        if(nodeParent1==nodeParent2) return false;
+        if(size[nodeParent1]<size[nodeParent2]){
+            parent[nodeParent2] = nodeParent1;
+            size[nodeParent2] += size[nodeParent1];
         }else{
-            parent[rootParent2]=rootParent1;
-            size[rootParent1]+=size[rootParent2];
-
+            parent[nodeParent1] = nodeParent2;
+            size[nodeParent1] += size[nodeParent2];
         }
         return true;
+
     }
 }
