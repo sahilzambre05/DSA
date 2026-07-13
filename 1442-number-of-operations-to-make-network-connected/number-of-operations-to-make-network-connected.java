@@ -1,11 +1,10 @@
 class Solution {
     public int makeConnected(int n, int[][] connections) {
+        DisjointSet dsu = new DisjointSet(n);
+        int wire=0;
         if(connections.length<n-1){
             return -1;
         }
-
-        DisjointSet dsu = new DisjointSet(n);
-        int wire=0;
         for(int connection[] : connections){
             int u = connection[0];
             int v = connection[1];
@@ -18,41 +17,36 @@ class Solution {
 }
 
 class DisjointSet{
-    int[] parent;
-    int[] size;
+    int parent[];
+    int size[];
     DisjointSet(int node){
         this.parent = new int[node];
         this.size = new int[node];
-
         for(int i=0;i<node;i++){
             parent[i] = i;
-            size[i]=1;
+            size[i] = 1;
         }
     }
 
-    public int findNodeParent(int node){
-        if(node==parent[node]){
-            return node;
-        }
-        parent[node] = findNodeParent(parent[node]);
+    public int findParent(int node){
+        if(node == parent[node]) return node;
+        parent[node] = findParent(parent[node]);
         return parent[node];
     }
 
     public boolean unionBySize(int node1,int node2){
-        int rootParent1 = findNodeParent(node1);
-        int rootParent2 = findNodeParent(node2);
+        int nodeParent1 = findParent(node1);
+        int nodeParent2 = findParent(node2);
+        if(nodeParent1==nodeParent2) return false;
 
-        if(rootParent1==rootParent2){
-            return false;
-        }
-
-        if(size[rootParent1]<size[rootParent2]){
-            parent[rootParent1]=rootParent2;
-            size[rootParent2]+=size[rootParent1];
+        if(size[nodeParent1]<size[nodeParent2]){
+            parent[nodeParent2] = nodeParent1;
+            size[nodeParent2] += size[nodeParent1];
         }else{
-            parent[rootParent2]=rootParent1;
-            size[rootParent1]+=size[rootParent2];
+            parent[nodeParent1] = nodeParent2;
+            size[nodeParent1] += size[nodeParent2];
         }
         return true;
+
     }
 }
