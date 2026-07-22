@@ -4,6 +4,9 @@ class Solution {
         int n = grid[0].length;
         Queue<int[]> queue = new LinkedList<>();
         int freshCount = 0;
+        int time=0;
+
+
         for(int i=0;i<m;i++){
             for(int j=0;j<n;j++){
                 if(grid[i][j]==1){
@@ -13,34 +16,32 @@ class Solution {
                 }
             }
         }
-        int time = 0;
-        if(freshCount ==0 ){
-            return 0;
-        }
+        if(freshCount==0) return 0;
 
         while(!queue.isEmpty()){
             int size = queue.size();
             for(int i=0;i<size;i++){
                 int node[] = queue.poll();
-                int r = node[0];
-                int c = node[1];
-                int neighbour[][] = {{r-1,c},{r+1,c},{r,c-1},{r,c+1}};
-                for(int neigh[] : neighbour){
-                    int nr = neigh[0];
-                    int nc = neigh[1];
-                    if(nr<0 || nc<0 || nr>=m || nc>=n || grid[nr][nc]==2 || grid[nr][nc]==0){
-                        continue;
-                    }
-                    queue.offer(new int[]{nr,nc});
-                    grid[nr][nc] = 2;
-                    freshCount--;
-                    if(freshCount==0){
-                        return time+1;
+                int row = node[0];
+                int col = node[1];
+                int[][] direction = {{row+1,col},{row-1,col},{row,col+1},{row,col-1}};
+                for(int[] dir : direction){
+                    int nr = dir[0];
+                    int nc = dir[1];
+                    if(nr>=0 && nc>=0 && nr<=m-1 && nc<=n-1 && grid[nr][nc]==1){
+                        grid[nr][nc] = 2;
+                        freshCount--;
+                        queue.offer(new int[]{nr,nc});
                     }
                 }
+
             }
             time++;
         }
-        return -1;
+        if(freshCount!=0){
+            return -1;
+        }
+
+        return time-1;
     }
 }
