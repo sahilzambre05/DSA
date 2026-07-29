@@ -1,18 +1,30 @@
 class Solution {
     public int rob(int[] nums) {
         int n = nums.length;
-        if(n==1) return nums[0];
         int[] dp = new int[n];
-        dp[0] = nums[0];
-        for(int i=1;i<n;i++){
-            if(i==1){
-                dp[i] = Math.max(nums[i],nums[i-1]);
-            }else{
-                dp[i] = Math.max(dp[i-1],nums[i]+dp[i-2]);
+        Arrays.fill(dp,-1);
+        int ans = recur(nums,nums.length-1,dp);
+        return ans;
+    }
 
-            }
-
+    public int recur(int[] nums,int i,int[] dp){
+        if(i==0){
+            return nums[i];
         }
-        return dp[nums.length-1];
+
+        if(i==-1){
+            return 0;
+        }
+
+        if(dp[i]!=-1){
+            return dp[i];
+        }
+
+        int p = nums[i] + recur(nums,i-2,dp);
+        int np = recur(nums,i-1,dp);
+        dp[i] = Math.max(p,np);
+
+        return dp[i];
+        
     }
 }
