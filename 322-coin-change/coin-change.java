@@ -1,15 +1,35 @@
 class Solution {
     public int coinChange(int[] coins, int amount) {
-        int[] dp = new int[amount+1];
-        Arrays.fill(dp,amount+1);
-        dp[0]=0;
-        for(int i=0;i<amount+1;i++){
-            for(int coin : coins){
-                if(i-coin>=0){
-                    dp[i]=Math.min(dp[i],1+dp[i-coin]);
-                }
-            }
+        int n = coins.length;
+        int dp[][] = new int[n][amount+1];
+        for(int i=0;i<n;i++){
+            Arrays.fill(dp[i],-1);
         }
-        return dp[amount] > amount ? -1 : dp[amount];
+        int ans = recur(coins,amount,n-1,dp);
+        return (ans==(int)1e9) ? -1 : ans;
+    }
+
+    public int recur(int[] coins,int amount, int index,int[][] dp){
+        if(index==0){
+            if(amount%coins[index]==0){
+                dp[index][amount] = amount/coins[index];
+                return amount/coins[index];
+            }
+            dp[index][amount] = (int)1e9;
+            return (int)1e9;
+        }
+
+        if(dp[index][amount]!=-1){
+            return dp[index][amount];
+        }
+
+        int pick = (int) 1e9;
+        if(amount>=coins[index]){
+            pick = 1 + recur(coins,amount-coins[index],index,dp);
+        }
+
+        int nopick = recur(coins,amount,index-1,dp);
+        dp[index][amount] = Math.min(pick,nopick);
+        return dp[index][amount];
     }
 }
